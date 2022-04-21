@@ -1,6 +1,7 @@
 using InsideAirbnb.Models;
 using InsideAirbnb.Services;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -24,6 +25,8 @@ builder.Services.AddDbContext<Airbnb2022Context>(options =>
 });
 
 builder.Services.AddScoped<IListingService, ListingService>();
+builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 
 var app = builder.Build();
 
@@ -33,6 +36,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapMetrics();
+
+app.UseHttpMetrics(options =>
+{
+    options.ReduceStatusCodeCardinality();
+});
 
 app.UseHttpsRedirection();
 
