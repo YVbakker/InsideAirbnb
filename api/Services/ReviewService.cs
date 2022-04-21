@@ -5,10 +5,10 @@ namespace InsideAirbnb.Services;
 
 public class ReviewService : IReviewService
 {
-    private readonly Airbnb2022Context _context;
+    private readonly AirBNBContext _context;
     private readonly DbSet<Review> _reviews;
 
-    public ReviewService(Airbnb2022Context context)
+    public ReviewService(AirBNBContext context)
     {
         _context = context;
         _reviews = context.Set<Review>();

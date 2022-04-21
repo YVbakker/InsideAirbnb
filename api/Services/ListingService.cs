@@ -6,10 +6,10 @@ namespace InsideAirbnb.Services;
 
 public class ListingService : IListingService
 {
-    private readonly Airbnb2022Context _context;
+    private readonly AirBNBContext _context;
     private readonly DbSet<Listing> _listings;
 
-    public ListingService(Airbnb2022Context context)
+    public ListingService(AirBNBContext context)
     {
         _context = context;
         _listings = context.Set<Listing>();
