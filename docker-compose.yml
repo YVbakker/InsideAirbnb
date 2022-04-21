@@ -1,0 +1,48 @@
+services:
+  database:
+    build:
+      dockerfile: Dockerfile.db
+      context: .
+    restart: always
+    ports:
+      - 1433:1433
+    volumes:
+      - database:/var/opt/mssql
+    env_file:
+      - .env
+  grafana:
+    image: grafana/grafana-oss
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana:/var/lib/grafana
+    env_file:
+      - .env.grafana
+  prometheus:
+    build:
+      dockerfile: Dockerfile.prom
+      context: .
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - prom:/etc/prometheus
+  api:
+    build:
+      dockerfile: Dockerfile.api
+      context: .
+    restart: always
+    ports:
+      - 5001:80
+    env_file:
+      - .env.api
+  test:
+    build:
+      dockerfile: Dockerfile.test
+      context: .
+
+volumes:
+  database: null
+  grafana: null
+  prom: null
