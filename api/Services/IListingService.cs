@@ -1,8 +1,9 @@
 using InsideAirbnb.Models;
+using InsideAirbnb.Utils;
 
 namespace InsideAirbnb.Services;
 
 public interface IListingService
 {
-    Task<IEnumerable<Listing>> GetAll();
+    Task<PaginatedList<Listing>> GetPaginated(int pageIndex, int pageSize);
 }

@@ -1,4 +1,5 @@
 using InsideAirbnb.Models;
+using InsideAirbnb.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace InsideAirbnb.Services;
@@ -14,8 +15,10 @@ public class ListingService : IListingService
         _listings = context.Set<Listing>();
     }
 
-    public async Task<IEnumerable<Listing>> GetAll()
+    public async Task<PaginatedList<Listing>> GetPaginated(int pageIndex, int pageSize)
     {
-        return await _listings.ToArrayAsync();
+        var query = _listings.AsQueryable();
+        var paginatedList = await PaginatedList<Listing>.CreateAsync(query, pageIndex, pageSize);
+        return paginatedList;
     }
 }
