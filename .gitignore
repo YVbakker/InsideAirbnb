@@ -1,0 +1,6 @@
+AirBNB.bacpac
+.DS_Store
+.env
+.env.api
+.env.grafana
+.idea
