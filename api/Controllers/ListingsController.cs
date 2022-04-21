@@ -8,17 +8,31 @@ namespace InsideAirbnb.Controllers;
 public class ListingsController : ControllerBase
 {
     private readonly IListingService _listingService;
+    private readonly IReviewService _reviewService;
 
-    public ListingsController(IListingService listingService)
+    public ListingsController(IListingService listingService, IReviewService reviewService)
     {
         _listingService = listingService;
+        _reviewService = reviewService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+    [HttpGet("pages/{index:int}")]
+    public async Task<IActionResult> Get(int index)
     {
-        var listings = await _listingService.GetAll();
+        const int pageSize = 50;
+        var listings = await _listingService.GetPaginated(index, pageSize);
         return Ok(listings);
     }
-    
+
+    [HttpGet("{id:int}/reviews")]
+    public async Task<IActionResult> GetReviews(int id)
+    {
+        var reviews = await _reviewService.GetByListingId(id);
+        if (reviews is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(reviews);
+    }
 }
