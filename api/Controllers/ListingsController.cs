@@ -1,4 +1,5 @@
 using InsideAirbnb.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsideAirbnb.Controllers;
@@ -16,10 +17,11 @@ public class ListingsController : ControllerBase
         _reviewService = reviewService;
     }
 
+    [Authorize]
     [HttpGet("pages/{index:int}")]
     public async Task<IActionResult> Get(int index)
     {
-        const int pageSize = 50;
+        const int pageSize = 10;
         var listings = await _listingService.GetPaginated(index, pageSize);
         return Ok(listings);
     }
