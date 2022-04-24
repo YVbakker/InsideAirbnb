@@ -1,5 +1,0 @@
-.env
-.idea
-bin
-obj
-appsettings.Development.json

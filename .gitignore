@@ -4,3 +4,6 @@ AirBNB.bacpac
 .env.api
 .env.grafana
 .idea
+obj
+bin
+appsettings.Development.json
