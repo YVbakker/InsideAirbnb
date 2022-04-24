@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace InsideAirbnb.Models
 {
-    public partial class AirBNBContext : DbContext
+    public partial class AirBnbContext : DbContext
     {
-        public AirBNBContext()
+        public AirBnbContext()
         {
         }
 
-        public AirBNBContext(DbContextOptions<AirBNBContext> options)
+        public AirBnbContext(DbContextOptions<AirBnbContext> options)
             : base(options)
         {
         }
@@ -23,15 +23,6 @@ namespace InsideAirbnb.Models
         public virtual DbSet<Review> Reviews { get; set; } = null!;
         public virtual DbSet<SummaryListing> SummaryListings { get; set; } = null!;
         public virtual DbSet<SummaryReview> SummaryReviews { get; set; } = null!;
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=AirBNB;User Id=sa;password=bB77PZrgSPxk;Trusted_Connection=False");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

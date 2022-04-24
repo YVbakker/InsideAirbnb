@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InsideAirbnb.Migrations
 {
-    [DbContext(typeof(AirBNBContext))]
+    [DbContext(typeof(AirBnbContext))]
     [Migration("20220421104835_Initial")]
     partial class Initial
     {

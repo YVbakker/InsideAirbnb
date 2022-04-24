@@ -5,10 +5,10 @@ namespace InsideAirbnb.Services;
 
 public class NeighbourhoodService : INeighbourhoodService
 {
-    private readonly AirBNBContext _context;
+    private readonly AirBnbContext _context;
     private readonly DbSet<Neighbourhood> _neighbourhoods;
 
-    public NeighbourhoodService(AirBNBContext context)
+    public NeighbourhoodService(AirBnbContext context)
     {
         _context = context;
         _neighbourhoods = context.Set<Neighbourhood>();
