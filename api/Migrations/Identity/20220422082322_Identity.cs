@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace InsideAirbnb.Migrations.Identity
+namespace InsideAirbnb.api.Migrations.Identity
 {
     public partial class Identity : Migration
     {
