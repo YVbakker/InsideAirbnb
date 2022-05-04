@@ -37,10 +37,15 @@ services:
       - 5001:80
     env_file:
       - .env.api
-  test:
-    build:
-      dockerfile: Dockerfile.test
-      context: .
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+  # test:
+  #   build:
+  #     dockerfile: Dockerfile.test
+  #     context: .
 
 volumes:
   database: null
