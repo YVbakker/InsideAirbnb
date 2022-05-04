@@ -1,8 +1,10 @@
-using InsideAirbnb.Models;
-using InsideAirbnb.Services;
+using InsideAirbnb.api.Models;
+using InsideAirbnb.api.Services;
+using InsideAirbnb.common.Models;
+using InsideAirbnb.common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InsideAirbnb.Controllers;
+namespace InsideAirbnb.api.Controllers;
 
 
 [ApiController]
@@ -10,10 +12,12 @@ namespace InsideAirbnb.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUserService userService, ITokenService tokenService)
     {
         _userService = userService;
+        _tokenService = tokenService;
     }
 
     [HttpPost("register")]
@@ -26,12 +30,12 @@ public class UsersController : ControllerBase
     [HttpPost("authenticate")]
     public async Task<IActionResult> Login(UserLoginDto dto)
     {
-        var valid = await _userService.ValidateAsync(dto);
-        if (!valid)
+        var validUser = await _userService.ValidateAsync(dto);
+        if (validUser is null)
         {
             return Unauthorized();
         }
 
-        return Ok(new {Token = await _userService.CreateTokenAsync()});
+        return Ok(new {Token = await _tokenService.CreateJwtTokenAsync(validUser)});
     }
 }

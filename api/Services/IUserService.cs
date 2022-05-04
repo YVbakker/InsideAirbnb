@@ -1,14 +1,14 @@
-using InsideAirbnb.Models;
+using System.Security.Claims;
+using InsideAirbnb.api.Models;
+using InsideAirbnb.common.Models;
+using InsideAirbnb.common.Utils;
 using Microsoft.AspNetCore.Identity;
 
-namespace InsideAirbnb.Services;
+namespace InsideAirbnb.api.Services;
 
 public interface IUserService
 {
-    // Task<IdentityResult> Update(User user);
-    // Task Delete();
     Task<IdentityResult> RegisterAsync(UserRegistrationDto dto);
-    Task<bool> ValidateAsync(UserLoginDto dto);
-    Task<string> CreateTokenAsync();
-    
+    Task<User?> ValidateAsync(UserLoginDto dto);
+    Task<List<Claim>> GetClaims(User user);
 }
