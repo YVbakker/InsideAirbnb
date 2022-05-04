@@ -1,8 +1,8 @@
-using InsideAirbnb.Models;
-using InsideAirbnb.Utils;
+using InsideAirbnb.api.Models;
+using InsideAirbnb.common.Utils;
 using Microsoft.EntityFrameworkCore;
 
-namespace InsideAirbnb.Services;
+namespace InsideAirbnb.api.Services;
 
 public class ListingService : IListingService
 {

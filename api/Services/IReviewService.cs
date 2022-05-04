@@ -1,6 +1,6 @@
-using InsideAirbnb.Models;
+using InsideAirbnb.api.Models;
 
-namespace InsideAirbnb.Services;
+namespace InsideAirbnb.api.Services;
 
 public interface IReviewService
 {

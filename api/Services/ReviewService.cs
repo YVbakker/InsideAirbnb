@@ -1,7 +1,7 @@
-using InsideAirbnb.Models;
+using InsideAirbnb.api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace InsideAirbnb.Services;
+namespace InsideAirbnb.api.Services;
 
 public class ReviewService : IReviewService
 {

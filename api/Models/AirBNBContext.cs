@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using InsideAirbnb.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace InsideAirbnb.Models
+namespace InsideAirbnb.api.Models
 {
     public partial class AirBnbContext : DbContext
     {

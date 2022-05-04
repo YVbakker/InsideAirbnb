@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using InsideAirbnb.Models;
-
-namespace InsideAirbnb.Models
+﻿namespace InsideAirbnb.api.Models
 {
     public partial class Calendar
     {

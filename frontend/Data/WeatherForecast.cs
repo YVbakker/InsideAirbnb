@@ -1,4 +1,4 @@
-namespace frontend.Data;
+namespace InsideAirbnb.frontend.Data;
 
 public class WeatherForecast
 {

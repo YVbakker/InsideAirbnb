@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace InsideAirbnb.Models;
+namespace InsideAirbnb.api.Models;
 
 public class User : IdentityUser
 {
@@ -21,13 +21,4 @@ public class UserRegistrationDto
     public string? Password { get; init; }
     public string? Email { get; init; }
     public string? PhoneNumber { get; init; }
-}
-
-public class UserLoginDto 
-{
-    [Required(ErrorMessage = "Username is required")]
-    public string? UserName { get; init; }
-
-    [Required(ErrorMessage = "Password is required")]
-    public string? Password { get; init; }
 }

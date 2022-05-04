@@ -1,8 +1,8 @@
-using InsideAirbnb.Services;
+using InsideAirbnb.api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace InsideAirbnb.Controllers;
+namespace InsideAirbnb.api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

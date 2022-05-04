@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace InsideAirbnb.Controllers;
+namespace InsideAirbnb.api.Controllers;
 
 [ApiController]
 [Route("[controller]")]

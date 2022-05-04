@@ -1,4 +1,4 @@
-namespace InsideAirbnb;
+namespace InsideAirbnb.api;
 
 public class WeatherForecast
 {
