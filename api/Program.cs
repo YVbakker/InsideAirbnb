@@ -1,6 +1,6 @@
 using System.Text;
-using InsideAirbnb.Models;
-using InsideAirbnb.Services;
+using InsideAirbnb.api.Models;
+using InsideAirbnb.api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +48,12 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "Default";
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -67,6 +73,7 @@ builder.Services.AddScoped<IListingService, ListingService>();
 builder.Services.AddScoped<INeighbourhoodService, NeighbourhoodService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService,TokenService>();
 
 var app = builder.Build();
 
