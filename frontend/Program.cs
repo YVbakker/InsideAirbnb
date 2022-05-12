@@ -1,4 +1,3 @@
-using InsideAirbnb.frontend.Services;
 using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,10 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddRefitClient<IUserService>().ConfigureHttpClient(config =>
-{
-    config.BaseAddress = new Uri(builder.Configuration.GetSection("Api").GetValue<string>("Url"));
-});
 
 var app = builder.Build();
 
