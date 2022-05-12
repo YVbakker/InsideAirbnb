@@ -5,6 +5,7 @@ namespace InsideAirbnb.api.Models
 {
     public class IdentityContext : IdentityDbContext<User>
     {
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public IdentityContext(DbContextOptions options) : base(options)
         {
         }
