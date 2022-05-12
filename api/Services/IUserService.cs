@@ -10,5 +10,8 @@ public interface IUserService
 {
     Task<IdentityResult> RegisterAsync(UserRegistrationDto dto);
     Task<User?> ValidateAsync(UserLoginDto dto);
+    Task<User> AuthenticateAsync(string refreshToken);
+    Task<User> LoginAsync(UserLoginDto loginDto);
     Task<List<Claim>> GetClaims(User user);
+    Task<User> GetById(string userId);
 }

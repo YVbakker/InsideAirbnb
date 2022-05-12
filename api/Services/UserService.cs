@@ -34,6 +34,16 @@ public class UserService : IUserService
         return !isValid ? null : user;
     }
 
+    public Task<User> AuthenticateAsync(string refreshToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<User> LoginAsync(UserLoginDto loginDto)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<List<Claim>> GetClaims(User user)
     {
         var claims = new List<Claim>
@@ -44,5 +54,10 @@ public class UserService : IUserService
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return claims;
+    }
+
+    public Task<User> GetById(string userId)
+    {
+        return _userManager.FindByIdAsync(userId);
     }
 }

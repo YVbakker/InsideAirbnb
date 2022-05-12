@@ -1,3 +1,4 @@
+using System.Net;
 using InsideAirbnb.api.Models;
 using InsideAirbnb.api.Services;
 using InsideAirbnb.common.Models;
@@ -36,6 +37,29 @@ public class UsersController : ControllerBase
             return Unauthorized();
         }
 
-        return Ok(new {Token = await _tokenService.CreateJwtTokenAsync(validUser)});
+        var ipAddress = HttpContext.Connection.RemoteIpAddress ?? IPAddress.Any;
+        var refreshToken = await _tokenService.CreateRefreshTokenAsync(validUser, ipAddress);
+        
+        HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = refreshToken.Expires,
+            Secure = true,
+            SameSite = SameSiteMode.None
+        });
+
+        return StatusCode(StatusCodes.Status201Created);
+    }
+
+    [HttpGet("token")]
+    public async Task<IActionResult> GetFreshJwt()
+    {
+        var token = HttpContext.Request.Cookies["refreshToken"];
+        if (token is null) return Unauthorized();
+        var isTokenValid = await _tokenService.IsRefreshTokenValid(token);
+        if (!isTokenValid) return Unauthorized();
+        var userId = await _tokenService.GetUserIdByRefreshToken(token);
+        var user = await _userService.GetById(userId);
+        return Ok(new {Token = await _tokenService.CreateJwtTokenAsync(user)});
     }
 }
