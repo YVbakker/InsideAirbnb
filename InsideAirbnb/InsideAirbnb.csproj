@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-Monolith-06EB29C5-2938-4067-B2A8-F239EA4AA7B8</UserSecretsId>
+    <AssemblyName>InsideAirbnb</AssemblyName>
+    <RootNamespace>InsideAirbnb</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

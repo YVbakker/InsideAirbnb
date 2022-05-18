@@ -1,6 +1,6 @@
-using InsideAirbnb.common.Utils;
 using Microsoft.EntityFrameworkCore;
 using Monolith.Models;
+using Monolith.Utils;
 
 namespace Monolith.Services;
 
