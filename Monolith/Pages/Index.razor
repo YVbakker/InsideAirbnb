@@ -1,0 +1,46 @@
+﻿@page "/"
+
+@using Monolith.Models
+@inherits IndexBase
+
+<PageTitle>Index</PageTitle>
+
+<h1>Listings</h1>
+<AuthorizeView>
+    <Authorized>
+        <ul>
+            @foreach (var claim in @context.User.Claims)
+            {
+                <li>@claim.Type: @claim.Value</li>
+            }
+        </ul>
+        @if (Listings is null)
+        {
+            <p>loading...</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Street</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var listing in Listings)
+                {
+                    <tr>
+                        <th scope="row">@listing.Id</th>
+                        <td>@listing.Name</td>
+                        <td>@listing.Description</td>
+                        <td>@listing.Street</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+</AuthorizeView>
