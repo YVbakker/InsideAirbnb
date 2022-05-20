@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Monolith.Utils;
+namespace InsideAirbnb.Utils;
 
 public class PaginatedList<T> : List<T>
 {

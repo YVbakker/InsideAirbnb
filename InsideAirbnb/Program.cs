@@ -1,29 +1,31 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using InsideAirbnb.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
-using Monolith.Areas.Identity;
-using Monolith.Data;
-using Monolith.Models;
-using Monolith.Services;
+using InsideAirbnb.Areas.Identity;
+using InsideAirbnb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContextConnection' not found.");
+var applicationConnectionString = builder.Configuration.GetConnectionString("Application") ?? throw new InvalidOperationException("Connection string not found.");
+var identityConnectionString = builder.Configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Connection string not found.");
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<AirBnbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(identityConnectionString));
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseSqlServer(applicationConnectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<IdentityContext>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddScoped<IListingsService, ListingsService>();
+builder.Services.AddScoped<IMapboxService, MapboxService>();
+
 
 var app = builder.Build();
 

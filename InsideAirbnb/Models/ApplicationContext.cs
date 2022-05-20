@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Monolith.Models
+namespace InsideAirbnb.Models
 {
-    public partial class AirBnbContext : DbContext
+    public partial class ApplicationContext : DbContext
     {
-        public AirBnbContext()
+        public ApplicationContext()
         {
         }
 
-        public AirBnbContext(DbContextOptions<AirBnbContext> options)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
         }
@@ -158,13 +158,11 @@ namespace Monolith.Models
                 entity.Property(e => e.LastReview).HasColumnName("last_review");
 
                 entity.Property(e => e.LastScraped).HasColumnName("last_scraped");
-
                 entity.Property(e => e.Latitude).HasColumnName("latitude");
 
                 entity.Property(e => e.License).HasColumnName("license");
 
                 entity.Property(e => e.ListingUrl).HasColumnName("listing_url");
-
                 entity.Property(e => e.Longitude).HasColumnName("longitude");
 
                 entity.Property(e => e.Market).HasColumnName("market");

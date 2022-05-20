@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-Monolith-06EB29C5-2938-4067-B2A8-F239EA4AA7B8</UserSecretsId>
+    <UserSecretsId>aspnet-InsideAirbnb-06EB29C5-2938-4067-B2A8-F239EA4AA7B8</UserSecretsId>
     <AssemblyName>InsideAirbnb</AssemblyName>
     <RootNamespace>InsideAirbnb</RootNamespace>
   </PropertyGroup>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shared\shared.csproj" />
+    <Folder Include="Migrations\Application" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-namespace Monolith.Data;
+namespace InsideAirbnb.Data;
 
 public class WeatherForecast
 {

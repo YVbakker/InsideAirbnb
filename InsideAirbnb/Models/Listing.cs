@@ -1,4 +1,4 @@
-﻿namespace Monolith.Models
+﻿namespace InsideAirbnb.Models
 {
     public partial class Listing
     {

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
-using Monolith.Models;
-using Monolith.Utils;
+using InsideAirbnb.Models;
+using InsideAirbnb.Utils;
 
-namespace Monolith.Services;
+namespace InsideAirbnb.Services;
 
 public interface IListingsService
 {

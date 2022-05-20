@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Monolith.Models;
-using Monolith.Utils;
+using InsideAirbnb.Models;
+using InsideAirbnb.Utils;
 
-namespace Monolith.Services;
+namespace InsideAirbnb.Services;
 
 public class ListingsService : IListingsService
 {
-    private readonly AirBnbContext _context;
+    private readonly ApplicationContext _context;
     private readonly DbSet<Listing> _repo;
 
-    public ListingsService(AirBnbContext context)
+    public ListingsService(ApplicationContext context)
     {
         _context = context;
         _repo = _context.Set<Listing>();
