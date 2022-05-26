@@ -13,21 +13,11 @@ public class IndexBase : ComponentBase
     [Inject] protected IListingsService ListingsService { get; set; } = default!;
     [Inject] private IMapboxService MapboxService { get; set; } = default!;
     [Inject] private IJSRuntime JsRuntime { get; set; } = default!;
-
-    protected IEnumerable<ListingLocation> ListingLocations { get; set; } = default!;
+    protected string GeoJson { get; set; } = "GeoJSON";
 
     protected override async Task OnInitializedAsync()
     {
-        ListingLocations = await ListingsService.GetLocations();
-        foreach (var location in ListingLocations)
-        {
-            AddListingToMap(location);
-        }
-    }
-
-    private async void AddListingToMap(ListingLocation location)
-    {
-        await JsRuntime.InvokeVoidAsync("addLocationToMap", location);
+        
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -35,7 +25,8 @@ public class IndexBase : ComponentBase
         if (firstRender)
         {
             var token = MapboxService.GetMapboxToken();
-            await JsRuntime.InvokeVoidAsync("loadMapBox", token);
+            GeoJson = await ListingsService.GetLocationsAsGeoJson();
+            await JsRuntime.InvokeVoidAsync("loadMapBox", token, GeoJson);
         }
 
         // foreach (var location in ListingLocations)
