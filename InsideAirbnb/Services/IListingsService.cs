@@ -8,4 +8,5 @@ public interface IListingsService
 {
     [Authorize]
     Task<PaginatedList<Listing>> GetAll(int pageIndex, int pageSize);
+    Task<IEnumerable<ListingLocation>> GetLocations();
 }
