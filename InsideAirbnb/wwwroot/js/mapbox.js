@@ -1,4 +1,4 @@
-﻿/** @typedef {{ id: number, latitude: number, longitude: number, name: string }} Location */
+﻿/** @typedef {{ listingId: number, latitude: number, longitude: number }} Location */
 
 
 /**
@@ -49,5 +49,5 @@ window.loadMapBox = (token) => {
 
 window.addLocationToMap = (listing) => {
     const marker = new mapboxgl.Marker().setLngLat([listing.longitude, listing.latitude]).addTo(window.map);
-    marker.getElement().addEventListener('click', () => alert(`Visit location #${listing.id}, also known as '${listing.name}', all the way over here!`));
+    marker.getElement().addEventListener('click', () => window.location.replace(`listings/${listing.listingId}`));
 }
