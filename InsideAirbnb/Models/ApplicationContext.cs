@@ -19,6 +19,7 @@ namespace InsideAirbnb.Models
         public virtual DbSet<Review> Reviews { get; set; } = null!;
         public virtual DbSet<SummaryListing> SummaryListings { get; set; } = null!;
         public virtual DbSet<SummaryReview> SummaryReviews { get; set; } = null!;
+        public virtual DbSet<ListingLocation> ListingLocations { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -158,12 +159,10 @@ namespace InsideAirbnb.Models
                 entity.Property(e => e.LastReview).HasColumnName("last_review");
 
                 entity.Property(e => e.LastScraped).HasColumnName("last_scraped");
-                entity.Property(e => e.Latitude).HasColumnName("latitude");
 
                 entity.Property(e => e.License).HasColumnName("license");
 
                 entity.Property(e => e.ListingUrl).HasColumnName("listing_url");
-                entity.Property(e => e.Longitude).HasColumnName("longitude");
 
                 entity.Property(e => e.Market).HasColumnName("market");
 
