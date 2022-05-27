@@ -32,18 +32,53 @@ window.loadMapBox = (token, geoJson) => {
         map.addSource('earthquakes', {
             type: 'geojson',
 // Use a URL for the value for the `data` property.
-            data: JSON.parse(geoJson)
+            data: JSON.parse(geoJson),
+            cluster: true
         });
 
         map.addLayer({
             'id': 'earthquakes-layer',
             'type': 'circle',
             'source': 'earthquakes',
+            'filter': ['has', 'point_count'],
             'paint': {
-                'circle-radius': 8,
+                'circle-radius': [
+                    'step',
+                    ['get', 'point_count'],
+                    20,
+                    100,
+                    30,
+                    750,
+                    40
+                ],
                 'circle-stroke-width': 2,
-                'circle-color': 'red',
+                'circle-color': 'blue',
                 'circle-stroke-color': 'white'
+            }
+        });
+
+        map.addLayer({
+            id: 'cluster-count',
+            type: 'symbol',
+            source: 'earthquakes',
+            filter: ['has', 'point_count'],
+            layout: {
+                'text-field': '{point_count_abbreviated}',
+                'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                'text-size': 20,
+            }
+        });
+
+        map.addLayer({
+            id: 'unclustered-point',
+            type: 'circle',
+            source: 'earthquakes',
+            filter: ['!', ['has', 'point_count']],
+            paint: {
+                'circle-color': 'red',
+                'circle-radius': 4,
+                'circle-stroke-width': 1,
+                'circle-stroke-color': '#fff'
             }
         });
     });
