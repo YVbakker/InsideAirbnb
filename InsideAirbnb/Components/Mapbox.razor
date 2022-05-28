@@ -1,0 +1,44 @@
+﻿@using InsideAirbnb.Services
+@using InsideAirbnb.Delegates
+@namespace InsideAirbnb.Components
+
+<div id="map" class="@Class"></div>
+
+@code {
+
+    [Inject]
+    private IMapboxService MapboxService { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JsRuntime { get; set; } = default!;
+
+    [Parameter]
+    public string? GeoJson { get; set; }
+    
+    [Parameter]
+    public string? Class { get; set; }
+    
+    [Parameter]
+    public SelectListingDelegate OnSelect { get; set; }
+    
+    private DotNetObjectReference<Mapbox>? dotNetHelper;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = MapboxService.GetMapboxToken();
+            dotNetHelper = DotNetObjectReference.Create(this);
+            await JsRuntime.InvokeVoidAsync("loadMapBox", token, GeoJson, dotNetHelper);
+        }
+    }
+    
+    [JSInvokable]
+    public async Task SelectListing(ulong listingId) => await OnSelect(listingId);
+
+    public void Dispose()
+    {
+        dotNetHelper?.Dispose();
+    }
+
+}

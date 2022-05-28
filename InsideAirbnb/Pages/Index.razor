@@ -1,0 +1,56 @@
+﻿@page "/"
+@using InsideAirbnb.Services
+@using InsideAirbnb.Components
+@using InsideAirbnb.Delegates
+@using InsideAirbnb.Models
+
+<PageTitle>Index</PageTitle>
+<div class="row h-100 g-0">
+    <div class="h-100 col-9">
+        @if (string.IsNullOrEmpty(Geojson))
+        {
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        }
+        else
+        {
+            <Mapbox Class="h-100" GeoJson="@Geojson" OnSelect="new SelectListingDelegate(SelectListing)"/>
+        }
+    </div>
+    <div class="col-3 p-3">
+        @if (SelectedListing == null)
+        {
+            <p>Click on a listing on the map to view details.</p>
+        }
+        else
+        {
+            <h1>@SelectedListing.Name</h1>
+        }
+    </div>
+</div>
+
+
+<AuthorizeView>
+    <Authorized>
+    </Authorized>
+</AuthorizeView>
+
+@code
+{
+    [Inject]
+    protected IListingsService ListingsService { get; set; } = null!;
+
+    private Listing? SelectedListing { get; set; }
+    private string? Geojson { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Geojson = await ListingsService.GetLocationsAsGeoJson();
+    }
+    
+    private async Task SelectListing(ulong listingId)
+    {
+        SelectedListing = await ListingsService.GetListingById(listingId);
+    }
+}
