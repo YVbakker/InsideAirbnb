@@ -37,9 +37,10 @@ public class ListingsService : IListingsService
         var featureCollection = new FeatureCollection();
         foreach (var location in locations)
         {
-            featureCollection.Features.Add(new Feature()
+            featureCollection.Features.Add(new Feature
             {
-                Geometry = new GeometryPoint(location.Latitude, location.Longitude)
+                Geometry = new GeometryPoint(location.Latitude, location.Longitude),
+                Properties = new Properties{ListingId = location.ListingId}
             });
         }
         
@@ -49,5 +50,10 @@ public class ListingsService : IListingsService
         };
 
         return JsonSerializer.Serialize(featureCollection, serializeOptions);
+    }
+
+    public Task<Listing?> GetListingById(ulong listingId)
+    {
+        return _listingsRepo.FirstOrDefaultAsync(e => e.Id.Equals(listingId));
     }
 }
