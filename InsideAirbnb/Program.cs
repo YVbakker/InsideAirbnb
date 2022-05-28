@@ -29,6 +29,19 @@ builder.Services.AddScoped<IMapboxService, MapboxService>();
 
 var app = builder.Build();
 
+var scope = app.Services.CreateScope();
+var applicationContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+if (applicationContext.Database.GetPendingMigrations().Any())
+{
+    applicationContext.Database.Migrate();
+}
+
+var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();
+if (identityContext.Database.GetPendingMigrations().Any())
+{
+    identityContext.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
