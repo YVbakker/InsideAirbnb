@@ -2,5 +2,5 @@ namespace InsideAirbnb.Models.GeoJson;
 
 public class Properties
 {
-    public ulong ListingId { get; set; }
+    public int? Id { get; set; }
 }

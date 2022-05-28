@@ -1,3 +1,3 @@
 namespace InsideAirbnb.Delegates;
 
-public delegate Task SelectListingDelegate(ulong listingId);
+public delegate Task SelectListingDelegate(int listingId);

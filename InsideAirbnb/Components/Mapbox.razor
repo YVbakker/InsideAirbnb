@@ -14,13 +14,13 @@
 
     [Parameter]
     public string? GeoJson { get; set; }
-    
+
     [Parameter]
     public string? Class { get; set; }
-    
+
     [Parameter]
     public SelectListingDelegate OnSelect { get; set; }
-    
+
     private DotNetObjectReference<Mapbox>? dotNetHelper;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -32,9 +32,14 @@
             await JsRuntime.InvokeVoidAsync("loadMapBox", token, GeoJson, dotNetHelper);
         }
     }
-    
+
     [JSInvokable]
-    public async Task SelectListing(ulong listingId) => await OnSelect(listingId);
+    public async Task SelectListing(int listingId)
+    {
+        Console.WriteLine("got it!");
+        await OnSelect(listingId);
+    }
+
 
     public void Dispose()
     {

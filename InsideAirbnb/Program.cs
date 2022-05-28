@@ -6,13 +6,13 @@ using InsideAirbnb.Areas.Identity;
 using InsideAirbnb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var applicationConnectionString = builder.Configuration.GetConnectionString("Application") ?? throw new InvalidOperationException("Connection string not found.");
+var applicationConnectionString = builder.Configuration.GetConnectionString("InsideAirbnb") ?? throw new InvalidOperationException("Connection string not found.");
 var identityConnectionString = builder.Configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Connection string not found.");
 
 // Add services to the container.
 builder.Services.AddDbContext<IdentityContext>(options =>
     options.UseSqlServer(identityConnectionString));
-builder.Services.AddDbContext<ApplicationContext>(options =>
+builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(applicationConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -30,10 +30,10 @@ builder.Services.AddScoped<IMapboxService, MapboxService>();
 var app = builder.Build();
 
 var scope = app.Services.CreateScope();
-var applicationContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-if (applicationContext.Database.GetPendingMigrations().Any())
+var insideAirbnbContext = scope.ServiceProvider.GetRequiredService<InsideAirbnbContext>();
+if (insideAirbnbContext.Database.GetPendingMigrations().Any())
 {
-    applicationContext.Database.Migrate();
+    insideAirbnbContext.Database.Migrate();
 }
 
 var identityContext = scope.ServiceProvider.GetRequiredService<IdentityContext>();

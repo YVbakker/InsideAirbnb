@@ -49,8 +49,10 @@
         Geojson = await ListingsService.GetLocationsAsGeoJson();
     }
     
-    private async Task SelectListing(ulong listingId)
+    private async Task SelectListing(int listingId)
     {
+        Console.WriteLine("got it 2!");
         SelectedListing = await ListingsService.GetListingById(listingId);
+        StateHasChanged();
     }
 }

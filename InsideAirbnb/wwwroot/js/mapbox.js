@@ -1,5 +1,4 @@
-﻿/** @typedef {{ listingId: number, latitude: number, longitude: number }} Location */
-
+﻿/** @typedef {{ id: number, latitude: number, longitude: number }} Location */
 
 /**
  * A function which loads the Mapbox library
@@ -67,10 +66,9 @@ window.loadMapBox = (token, geoJson, dotNetHelper) => {
 
         map.on('click', 'unclustered-point', (e) => {
             // const coordinates = e.features[0].geometry.coordinates.slice();
-            console.log(`clicked on listing ${e.features[0].properties.listingId}`);
-            dotNetHelper.invokeMethodAsync('SelectListing', 2818);
+            console.log(`clicked on listing ${e.features[0].properties.id}`);
+            window.location.replace(`#${e.features[0].properties.id}`)
+            dotNetHelper.invokeMethodAsync('SelectListing', e.features[0].properties.id);
         });
     });
-
-
 }
