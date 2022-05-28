@@ -5,4 +5,5 @@ public class Feature
 {
     public string Type => "feature";
     public GeometryPoint Geometry { get; set; }
+    public Properties Properties { get; set; }
 }
