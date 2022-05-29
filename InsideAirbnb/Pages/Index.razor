@@ -5,8 +5,8 @@
 @using InsideAirbnb.Models
 
 <PageTitle>Index</PageTitle>
-<div class="row h-100 g-0">
-    <div class="h-100 col-9">
+<div class="h-100 vw-100 d-flex">
+    <div class="flex-grow-1">
         @if (string.IsNullOrEmpty(Geojson))
         {
             <div class="spinner-border" role="status">
@@ -18,14 +18,31 @@
             <Mapbox Class="h-100" GeoJson="@Geojson" OnSelect="new SelectListingDelegate(SelectListing)"/>
         }
     </div>
-    <div class="col-3 p-3">
+    <div class="w-25 d-flex flex-column overflow-auto">
         @if (SelectedListing == null)
         {
             <p>Click on a listing on the map to view details.</p>
         }
         else
         {
-            <h1>@SelectedListing.Name</h1>
+            <div>
+                <img class="img-fluid" alt="photo of the listing" src="@SelectedListing.PictureUrl">
+            </div>
+            <div class="px-3">
+                <h3>@SelectedListing.Name</h3>
+
+                <p>
+                    <span class="oi oi-map-marker"></span> @SelectedListing.NeighbourhoodCleansed
+                </p>
+                @if (@SelectedListing.ReviewScoresRating != null)
+                {
+                    <p>
+                        <span class="oi oi-star"></span> @SelectedListing.ReviewScoresRating / 5
+                    </p>
+                }
+
+                <p>@((MarkupString)SelectedListing.Description)</p>
+            </div>
         }
     </div>
 </div>
@@ -48,7 +65,7 @@
     {
         Geojson = await ListingsService.GetLocationsAsGeoJson();
     }
-    
+
     private async Task SelectListing(int listingId)
     {
         Console.WriteLine("got it 2!");

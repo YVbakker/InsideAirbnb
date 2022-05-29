@@ -67,7 +67,7 @@ window.loadMapBox = (token, geoJson, dotNetHelper) => {
         map.on('click', 'unclustered-point', (e) => {
             // const coordinates = e.features[0].geometry.coordinates.slice();
             console.log(`clicked on listing ${e.features[0].properties.id}`);
-            window.location.replace(`#${e.features[0].properties.id}`)
+            // window.location.replace(`#${e.features[0].properties.id}`)
             dotNetHelper.invokeMethodAsync('SelectListing', e.features[0].properties.id);
         });
     });
