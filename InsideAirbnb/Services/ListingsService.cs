@@ -61,4 +61,14 @@ public class ListingsService : IListingsService
     {
         return _listingsRepo.FirstOrDefaultAsync(e => e.Id.Equals(listingId));
     }
+
+    public async Task<IEnumerable<StatisticsDto>> GetNumberOfListingsPerNeighborhood()
+    {
+        var stats = await _listingsRepo.GroupBy(e => e.NeighbourhoodCleansed).Select(e => new StatisticsDto()
+        {
+            Label = e.Key ?? "unlisted",
+            Value = e.Select(listing => listing.NeighbourhoodCleansed).Count()
+        }).ToListAsync();
+        return stats;
+    }
 }

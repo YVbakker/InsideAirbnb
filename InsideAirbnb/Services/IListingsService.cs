@@ -12,4 +12,5 @@ public interface IListingsService
     Task<IEnumerable<ListingLocationDto>> GetLocations();
     Task<string> GetLocationsAsGeoJson();
     Task<Listing?> GetListingById(int listingId);
+    Task<IEnumerable<StatisticsDto>> GetNumberOfListingsPerNeighborhood();
 }

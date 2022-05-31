@@ -18,6 +18,7 @@ builder.Services.AddDbContext<InsideAirbnbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>();
 
 builder.Services.AddRazorPages();
@@ -25,7 +26,6 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 builder.Services.AddScoped<IListingsService, ListingsService>();
 builder.Services.AddScoped<IMapboxService, MapboxService>();
-
 
 var app = builder.Build();
 

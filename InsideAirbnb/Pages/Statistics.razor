@@ -1,0 +1,84 @@
+﻿@page "/stats"
+@using ChartJs.Blazor.PieChart
+@using ChartJs.Blazor.Common
+@using ChartJs.Blazor.Util
+@using System.Drawing
+@using InsideAirbnb.Models.Dto
+@using InsideAirbnb.Services
+@using InsideAirbnb.Utils
+
+<PageTitle>Statistics - InsideAirbnb</PageTitle>
+<div class="container-fluid p-3">
+    <AuthorizeView>
+        <Authorized>
+            <ul>
+                    @foreach (var claim in context.User.Claims)
+                    {
+                        <li>@claim.Type: @claim.Value</li>
+                    }
+                </ul>
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView Roles="Administrator">
+        <Authorized>
+            <h1>Statistics</h1>
+            @if (_config != null)
+            {
+                <Chart Config="_config"></Chart>
+            }
+            else
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+        </Authorized>
+        <NotAuthorized>
+            <p>You need to log in as an admin in order to see this.</p>
+        </NotAuthorized>
+    </AuthorizeView>
+</div>
+
+
+@code
+{
+    [Inject]
+    protected IListingsService ListingsService { get; set; } = null!;
+
+    private IEnumerable<StatisticsDto> NListingsPerNeighborhood { get; set; } = default!;
+
+    private PieConfig _config = default!;
+
+    private string? Geojson { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var rnd = new Random();
+        NListingsPerNeighborhood = await ListingsService.GetNumberOfListingsPerNeighborhood();
+        _config = new PieConfig
+        {
+            Options = new PieOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Listings per Neighborhood"
+                }
+            }
+        };
+
+        var nListingsPerNeighborhood = NListingsPerNeighborhood.ToList();
+        foreach (var stat in nListingsPerNeighborhood)
+        {
+            _config.Data.Labels.Add(stat.Label);
+        }
+
+        var dataset = new PieDataset<float>(nListingsPerNeighborhood.Select(e => e.Value))
+        {
+            BackgroundColor = CssColorUtil.Colors.Take(nListingsPerNeighborhood.Count).ToArray()
+        };
+
+        _config.Data.Datasets.Add(dataset);
+    }
+}
