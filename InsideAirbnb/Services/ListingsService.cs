@@ -1,3 +1,4 @@
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using InsideAirbnb.Models;
@@ -62,7 +63,7 @@ public class ListingsService : IListingsService
         return _listingsRepo.FirstOrDefaultAsync(e => e.Id.Equals(listingId));
     }
 
-    public async Task<IEnumerable<StatisticsDto>> GetNumberOfListingsPerNeighborhood()
+    public async Task<IList<StatisticsDto>> GetNumberOfListingsPerNeighborhood()
     {
         var stats = await _listingsRepo.GroupBy(e => e.NeighbourhoodCleansed).Select(e => new StatisticsDto()
         {
@@ -70,5 +71,38 @@ public class ListingsService : IListingsService
             Value = e.Select(listing => listing.NeighbourhoodCleansed).Count()
         }).ToListAsync();
         return stats;
+    }
+
+    public async Task<IList<StatisticsDto>> GetAvgPricePerNeighborhood()
+    {
+        var priceNeighborhoodGrouped = await _listingsRepo.Select(e => new PriceNeighborhoodDto
+        {
+            Price = e.Price,
+            NeighbourhoodCleansed = e.NeighbourhoodCleansed
+        }).ToListAsync();
+
+        var stats = priceNeighborhoodGrouped.GroupBy(e => e.NeighbourhoodCleansed).Select(e => new StatisticsDto
+        {
+            Label = e.Key ?? "unlisted",
+            Value = (float) e.Select(listing => ParsePrice(listing.Price ?? string.Empty)).Average()
+        }).ToList();
+        return stats;
+    }
+
+    private static decimal ParsePrice(string price)
+    {
+        decimal parsedPrice;
+        try
+        {
+            parsedPrice = decimal.Parse(price, NumberStyles.Currency);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            Console.WriteLine(price);
+            throw;
+        }
+
+        return parsedPrice;
     }
 }

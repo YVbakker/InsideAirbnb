@@ -3,28 +3,40 @@
 @using ChartJs.Blazor.Common
 @using ChartJs.Blazor.Util
 @using System.Drawing
+@using ChartJs.Blazor.BarChart
 @using InsideAirbnb.Models.Dto
 @using InsideAirbnb.Services
 @using InsideAirbnb.Utils
+@using NuGet.Packaging
 
 <PageTitle>Statistics - InsideAirbnb</PageTitle>
 <div class="container-fluid p-3">
     <AuthorizeView>
         <Authorized>
             <ul>
-                    @foreach (var claim in context.User.Claims)
-                    {
-                        <li>@claim.Type: @claim.Value</li>
-                    }
-                </ul>
+                @foreach (var claim in context.User.Claims)
+                {
+                    <li>@claim.Type: @claim.Value</li>
+                }
+            </ul>
         </Authorized>
     </AuthorizeView>
     <AuthorizeView Roles="Administrator">
         <Authorized>
             <h1>Statistics</h1>
-            @if (_config != null)
+            @if (_pieConfig != null)
             {
-                <Chart Config="_config"></Chart>
+                <Chart Config="_pieConfig"></Chart>
+            }
+            else
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            @if (_barConfig != null)
+            {
+                <Chart Config="_barConfig"></Chart>
             }
             else
             {
@@ -45,9 +57,11 @@
     [Inject]
     protected IListingsService ListingsService { get; set; } = null!;
 
-    private IEnumerable<StatisticsDto> NListingsPerNeighborhood { get; set; } = default!;
+    private IList<StatisticsDto> NListingsPerNeighborhood { get; set; } = default!;
+    private IList<StatisticsDto> AvgListingsPerNeighborhood { get; set; } = default!;
 
-    private PieConfig _config = default!;
+    private PieConfig _pieConfig = default!;
+    private BarConfig _barConfig = default!;
 
     private string? Geojson { get; set; } = default!;
 
@@ -55,7 +69,8 @@
     {
         var rnd = new Random();
         NListingsPerNeighborhood = await ListingsService.GetNumberOfListingsPerNeighborhood();
-        _config = new PieConfig
+        AvgListingsPerNeighborhood = await ListingsService.GetAvgPricePerNeighborhood();
+        _pieConfig = new PieConfig
         {
             Options = new PieOptions
             {
@@ -67,18 +82,33 @@
                 }
             }
         };
-
-        var nListingsPerNeighborhood = NListingsPerNeighborhood.ToList();
-        foreach (var stat in nListingsPerNeighborhood)
+        
+        _barConfig = new BarConfig
         {
-            _config.Data.Labels.Add(stat.Label);
-        }
-
-        var dataset = new PieDataset<float>(nListingsPerNeighborhood.Select(e => e.Value))
-        {
-            BackgroundColor = CssColorUtil.Colors.Take(nListingsPerNeighborhood.Count).ToArray()
+            Options = new BarOptions
+            {
+                Responsive = true,
+                Title = new OptionsTitle
+                {
+                    Display = true,
+                    Text = "Average price per Neighborhood"
+                }
+            }
         };
 
-        _config.Data.Datasets.Add(dataset);
+        _pieConfig.Data.Labels.AddRange(NListingsPerNeighborhood.Select(e => e.Label));
+        _barConfig.Data.Labels.AddRange(AvgListingsPerNeighborhood.Select(e => e.Label));
+
+        var pieDataset = new PieDataset<float>(NListingsPerNeighborhood.Select(e => e.Value))
+        {
+            BackgroundColor = CssColorUtil.Colors.Take(NListingsPerNeighborhood.Count).ToArray()
+        };
+        var barDataset = new BarDataset<float>(AvgListingsPerNeighborhood.Select(e => e.Value))
+        {
+            BackgroundColor = CssColorUtil.Colors.Take(AvgListingsPerNeighborhood.Count).ToArray()
+        };
+
+        _pieConfig.Data.Datasets.Add(pieDataset);
+        _barConfig.Data.Datasets.Add(barDataset);
     }
 }
