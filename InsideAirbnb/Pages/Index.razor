@@ -4,55 +4,102 @@
 @using InsideAirbnb.Delegates
 @using InsideAirbnb.Models
 @using System.Globalization
+@using InsideAirbnb.Models.Parameters
 
 <PageTitle>Index</PageTitle>
-<div class="h-100 vw-100 d-flex">
-    <div class="flex-grow-1">
-        @if (string.IsNullOrEmpty(Geojson))
-        {
-            <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+<div class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand-lg bg-light bg-opacity-50">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="d-flex flex-row" role="search">
+                    <select @bind="Parameters.Neighborhood" class="form-select me-2" aria-label="Default select example">
+                        <option selected>Select neighborhood</option>
+                        @if (Neighborhoods != null)
+                        {
+                            foreach (var neighborhood in Neighborhoods)
+                            {
+                                <option value="@neighborhood">@neighborhood</option>
+                            }
+                        }
+                    </select>
+                    <select class="form-select me-2" aria-label="Default select example">
+                        <option selected>Select your budget</option>
+                        <option value="100">€ 100</option>
+                        <option value="200">€ 200</option>
+                        <option value="300">€ 300</option>
+                        <option value="400">€ 400</option>
+                        <option value="500">€ 500</option>
+                        <option value="600">€ 600</option>
+                        <option value="700">€ 700</option>
+                        <option value="800">€ 800</option>
+                        <option value="900">€ 900</option>
+                        <option value="1000">€ 1000</option>
+                    </select>
+                    <select class="form-select me-2" aria-label="Default select example">
+                        <option selected>Select minimum review score</option>
+                        <option value="1">★ (1 star)</option>
+                        <option value="2">★★ (2 stars)</option>
+                        <option value="3">★★★ (3 stars)</option>
+                        <option value="4">★★★★ (4 stars)</option>
+                        <option value="5">★★★★★ (5 stars)</option>
+                    </select>
+                    <button class="btn btn-outline-success" @onclick="Filter">Filter</button>
+                </div>
             </div>
-        }
-        else
-        {
-            <Mapbox Class="h-100" GeoJson="@Geojson" OnSelect="new SelectListingDelegate(SelectListing)"/>
-        }
-    </div>
-    <div class="w-25 d-flex flex-column overflow-auto">
-        @if (SelectedListing == null)
-        {
-            <p>Click on a listing on the map to view details.</p>
-        }
-        else
-        {
-            <div>
-                <img class="img-fluid" alt="photo of the listing" src="@SelectedListing.PictureUrl">
-            </div>
-            <div class="px-3">
-                <h3>@SelectedListing.Name</h3>
-
-                <p>
-                    <span class="oi oi-map-marker"></span>&nbsp;@SelectedListing.NeighbourhoodCleansed
-                </p>
-                @if (@SelectedListing.ReviewScoresRating != null)
-                {
+        </div>
+    </nav>
+    <div class="flex-grow-1 vw-100 d-flex overflow-auto">
+        <div class="flex-grow-1">
+            @if (string.IsNullOrEmpty(Geojson))
+            {
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            else
+            {
+                <Mapbox Class="h-100" GeoJson="@Geojson" OnSelect="new SelectListingDelegate(SelectListing)"/>
+            }
+        </div>
+        <div class="w-25 d-flex flex-column overflow-auto">
+            @if (SelectedListing == null)
+            {
+                <p>Click on a listing on the map to view details.</p>
+            }
+            else
+            {
+                <div>
+                    <img class="img-fluid" alt="photo of the listing" src="@SelectedListing.PictureUrl">
+                </div>
+                <div class="px-3">
+                    <h3>@SelectedListing.Name</h3>
                     <p>
-                        <span class="oi oi-star"></span>&nbsp;@SelectedListing.ReviewScoresRating / 5
+                        <span class="oi oi-map-marker"></span>&nbsp;@SelectedListing.NeighbourhoodCleansed
                     </p>
-                }
-                <p>
-                    <span class="oi oi-euro"></span>&nbsp;
-                    @{ var parsedPrice = decimal.Parse(SelectedListing.Price ?? string.Empty,
-                           NumberStyles.AllowCurrencySymbol | NumberStyles.AllowDecimalPoint
-                           );@parsedPrice
+                    @if (@SelectedListing.ReviewScoresRating != null)
+                    {
+                        <p>
+                            <span class="oi oi-star"></span>&nbsp;@SelectedListing.ReviewScoresRating / 5
+                        </p>
                     }
-                    / night
-                </p>
+                    <p>
+                        <span class="oi oi-euro"></span>&nbsp;
+                        @{
+                            var parsedPrice = decimal.Parse(SelectedListing.Price ?? string.Empty,
+                                NumberStyles.AllowCurrencySymbol | NumberStyles.AllowDecimalPoint
+                                );
+                            @parsedPrice
+                        }
+                        / night
+                    </p>
 
-                <p>@((MarkupString) SelectedListing.Description)</p>
-            </div>
-        }
+                    <p>@((MarkupString) SelectedListing.Description)</p>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
@@ -69,16 +116,26 @@
 
     private Listing? SelectedListing { get; set; }
     private string? Geojson { get; set; }
+    private List<string?> Neighborhoods { get; set; } = default!;
+
+    private ListingParameters Parameters { get; set; } = new ListingParameters();
 
     protected override async Task OnInitializedAsync()
     {
-        Geojson = await ListingsService.GetLocationsAsGeoJson();
+        Geojson = await ListingsService.GetLocationsAsGeoJson(Parameters);
+        Neighborhoods = await ListingsService.GetNeighborhoods();
     }
 
     private async Task SelectListing(int listingId)
     {
-        Console.WriteLine("got it 2!");
         SelectedListing = await ListingsService.GetListingById(listingId);
+        StateHasChanged();
+    }
+
+    private async void Filter()
+    {
+        Console.WriteLine("updated neighborhood filter");
+        Geojson = await ListingsService.GetLocationsAsGeoJson(Parameters);
         StateHasChanged();
     }
 }

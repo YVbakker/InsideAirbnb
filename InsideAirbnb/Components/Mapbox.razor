@@ -1,11 +1,17 @@
 ﻿@using InsideAirbnb.Services
 @using InsideAirbnb.Delegates
 @namespace InsideAirbnb.Components
+<div class="h-100 d-flex flex-column">
+    
+    <div id="map" class="@Class"></div>
+</div>
 
-<div id="map" class="@Class"></div>
 
 @code {
-
+    
+    [Inject]
+    protected IListingsService ListingsService { get; set; } = null!;
+    
     [Inject]
     private IMapboxService MapboxService { get; set; } = default!;
 

@@ -4,6 +4,7 @@ using System.Text.Json;
 using InsideAirbnb.Models;
 using InsideAirbnb.Models.Dto;
 using InsideAirbnb.Models.GeoJson;
+using InsideAirbnb.Models.Parameters;
 using InsideAirbnb.Utils;
 
 namespace InsideAirbnb.Services;
@@ -26,20 +27,42 @@ public class ListingsService : IListingsService
         return paginatedList;
     }
 
-    public async Task<IEnumerable<ListingLocationDto>> GetLocations()
+    public async Task<IEnumerable<ListingLocationDto>> GetLocations(ListingParameters parameters)
     {
         var locations = await _listingsRepo.Select(l => new ListingLocationDto
         {
             Id = l.Id,
             Latitude = l.Latitude,
-            Longitude = l.Longitude
+            Longitude = l.Longitude,
+            NeighbourhoodCleansed = l.NeighbourhoodCleansed,
+            Price = l.Price,
+            ReviewScoresRating = l.ReviewScoresRating
         }).ToListAsync();
-        return locations;
+        
+        var query = locations.AsQueryable();
+        if (parameters.Price.HasValue)
+        {
+            query = query.Where(e => ParsePrice(e.Price ?? "$0.00") <= parameters.Price.Value);
+        }
+
+        if (!string.IsNullOrEmpty(parameters.Neighborhood))
+        {
+            query = query.Where(e =>
+                e.NeighbourhoodCleansed != null && e.NeighbourhoodCleansed.Equals(parameters.Neighborhood));
+        }
+
+        if (parameters.Review.HasValue)
+        {
+            query = query.Where(e =>
+                e.ReviewScoresRating != null && e.ReviewScoresRating.Value >= parameters.Review.Value);
+        }
+        
+        return query.AsEnumerable();
     }
 
-    public async Task<string> GetLocationsAsGeoJson()
+    public async Task<string> GetLocationsAsGeoJson(ListingParameters parameters)
     {
-        var locations = await GetLocations();
+        var locations = await GetLocations(parameters);
         var featureCollection = new FeatureCollection();
         foreach (var location in locations)
         {
@@ -87,6 +110,11 @@ public class ListingsService : IListingsService
             Value = (float) e.Select(listing => ParsePrice(listing.Price ?? string.Empty)).Average()
         }).ToList();
         return stats;
+    }
+
+    public Task<List<string?>> GetNeighborhoods()
+    {
+        return _listingsRepo.Select(e => e.NeighbourhoodCleansed).Distinct().ToListAsync();
     }
 
     private static decimal ParsePrice(string price)
