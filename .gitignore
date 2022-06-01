@@ -8,3 +8,4 @@ obj
 bin
 appsettings.Development.json
 docker-compose.prod.yml
+docker-compose.test.yml
