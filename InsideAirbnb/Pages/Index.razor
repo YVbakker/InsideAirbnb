@@ -5,6 +5,7 @@
 @using InsideAirbnb.Models
 @using System.Globalization
 @using InsideAirbnb.Models.Parameters
+@using InsideAirbnb.Utils
 
 <PageTitle>Index</PageTitle>
 <div class="d-flex flex-column h-100">
@@ -82,18 +83,12 @@
                     @if (@SelectedListing.ReviewScoresRating != null)
                     {
                         <p>
-                            <span class="oi oi-star"></span>&nbsp;@SelectedListing.ReviewScoresRating / 5
+                            <span class="oi oi-star"></span>&nbsp;@SelectedListing.ReviewScoresRating / 5 (@SelectedListing.NumberOfReviews reviews)
                         </p>
                     }
                     <p>
                         <span class="oi oi-euro"></span>&nbsp;
-                        @{
-                            var parsedPrice = decimal.Parse(SelectedListing.Price ?? string.Empty,
-                                NumberStyles.AllowCurrencySymbol | NumberStyles.AllowDecimalPoint
-                                );
-                            @parsedPrice
-                        }
-                        / night
+                        @{ var parsedPrice = PriceParser.Parse(SelectedListing.Price ?? string.Empty); @parsedPrice} / night
                     </p>
 
                     <p>@((MarkupString) SelectedListing.Description)</p>

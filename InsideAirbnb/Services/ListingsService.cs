@@ -42,7 +42,7 @@ public class ListingsService : IListingsService
         var query = locations.AsQueryable();
         if (parameters.Price.HasValue)
         {
-            query = query.Where(e => ParsePrice(e.Price ?? "$0.00") <= parameters.Price.Value);
+            query = query.Where(e => PriceParser.Parse(e.Price ?? "$0.00") <= parameters.Price.Value);
         }
 
         if (!string.IsNullOrEmpty(parameters.Neighborhood))
@@ -107,7 +107,7 @@ public class ListingsService : IListingsService
         var stats = priceNeighborhoodGrouped.GroupBy(e => e.NeighbourhoodCleansed).Select(e => new StatisticsDto
         {
             Label = e.Key ?? "unlisted",
-            Value = (float) e.Select(listing => ParsePrice(listing.Price ?? string.Empty)).Average()
+            Value = (float) e.Select(listing => PriceParser.Parse(listing.Price ?? string.Empty)).Average()
         }).ToList();
         return stats;
     }
@@ -115,22 +115,5 @@ public class ListingsService : IListingsService
     public Task<List<string?>> GetNeighborhoods()
     {
         return _listingsRepo.Select(e => e.NeighbourhoodCleansed).Distinct().ToListAsync();
-    }
-
-    private static decimal ParsePrice(string price)
-    {
-        decimal parsedPrice;
-        try
-        {
-            parsedPrice = decimal.Parse(price, NumberStyles.Currency);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            Console.WriteLine(price);
-            throw;
-        }
-
-        return parsedPrice;
     }
 }
