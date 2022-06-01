@@ -88,7 +88,7 @@
                     }
                     <p>
                         <span class="oi oi-euro"></span>&nbsp;
-                        @{ var parsedPrice = PriceParser.Parse(SelectedListing.Price ?? string.Empty); @parsedPrice} / night
+                        @{ var parsedPrice = PriceParser.Parse(SelectedListing.Price ?? "$0.00"); @parsedPrice} / night
                     </p>
 
                     <p>@((MarkupString) SelectedListing.Description)</p>
