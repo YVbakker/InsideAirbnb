@@ -7,3 +7,4 @@ AirBNB.bacpac
 obj
 bin
 appsettings.Development.json
+.docker-compose.prod.yml
