@@ -20,9 +20,8 @@ env:
   REGISTRY: docker.io
   USERNAME: yvbakker
   # github.repository as <account>/<repo>
-  IMAGE_NAME: insideairbnb
-  IMAGE_NAME_DB: insideairbnb-db
-
+  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME_DB: ${{ github.repository }}-db
 jobs:
   build:
     runs-on: ubuntu-latest
