@@ -11,16 +11,16 @@
 
 <PageTitle>Statistics - InsideAirbnb</PageTitle>
 <div class="container-fluid p-3">
-    <AuthorizeView>
-        <Authorized>
-            <ul>
-                @foreach (var claim in context.User.Claims)
-                {
-                    <li>@claim.Type: @claim.Value</li>
-                }
-            </ul>
-        </Authorized>
-    </AuthorizeView>
+    @* <AuthorizeView> *@
+    @*     <Authorized> *@
+    @*         <ul> *@
+    @*             @foreach (var claim in context.User.Claims) *@
+    @*             { *@
+    @*                 <li>@claim.Type: @claim.Value</li> *@
+    @*             } *@
+    @*         </ul> *@
+    @*     </Authorized> *@
+    @* </AuthorizeView> *@
     <AuthorizeView Roles="Administrator">
         <Authorized>
             <h1>Statistics</h1>
@@ -82,7 +82,7 @@
                 }
             }
         };
-        
+
         _barConfig = new BarConfig
         {
             Options = new BarOptions
