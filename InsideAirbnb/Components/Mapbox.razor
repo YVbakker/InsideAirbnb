@@ -31,22 +31,27 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        switch (firstRender)
         {
-            var token = MapboxService.GetMapboxToken();
-            dotNetHelper = DotNetObjectReference.Create(this);
-            await JsRuntime.InvokeVoidAsync("loadMapBox", token, GeoJson, dotNetHelper);
+            case true:
+            {
+                var token = MapboxService.GetMapboxToken();
+                dotNetHelper = DotNetObjectReference.Create(this);
+                await JsRuntime.InvokeVoidAsync("loadMapBox", token, GeoJson, dotNetHelper);
+                break;
+            }
+            case false:
+                await JsRuntime.InvokeVoidAsync("updateMap", GeoJson);
+                break;
         }
     }
 
     [JSInvokable]
     public async Task SelectListing(int listingId)
     {
-        Console.WriteLine("got it!");
         await OnSelect(listingId);
     }
-
-
+    
     public void Dispose()
     {
         dotNetHelper?.Dispose();

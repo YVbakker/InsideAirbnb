@@ -17,7 +17,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="d-flex flex-row" role="search">
                     <select @bind="Parameters.Neighborhood" class="form-select me-2" aria-label="Default select example">
-                        <option selected>Select neighborhood</option>
+                        <option value="" selected>Select neighborhood</option>
                         @if (Neighborhoods != null)
                         {
                             foreach (var neighborhood in Neighborhoods)
@@ -26,8 +26,8 @@
                             }
                         }
                     </select>
-                    <select class="form-select me-2" aria-label="Default select example">
-                        <option selected>Select your budget</option>
+                    <select @bind="Parameters.Price" class="form-select me-2" aria-label="Default select example">
+                        <option value="" selected>Select your budget</option>
                         <option value="100">€ 100</option>
                         <option value="200">€ 200</option>
                         <option value="300">€ 300</option>
@@ -39,8 +39,8 @@
                         <option value="900">€ 900</option>
                         <option value="1000">€ 1000</option>
                     </select>
-                    <select class="form-select me-2" aria-label="Default select example">
-                        <option selected>Select minimum review score</option>
+                    <select @bind="Parameters.Review" class="form-select me-2" aria-label="Default select example">
+                        <option value="" selected>Select minimum review score</option>
                         <option value="1">★ (1 star)</option>
                         <option value="2">★★ (2 stars)</option>
                         <option value="3">★★★ (3 stars)</option>

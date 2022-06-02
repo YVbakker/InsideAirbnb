@@ -72,3 +72,13 @@ window.loadMapBox = (token, geoJson, dotNetHelper) => {
         });
     });
 }
+
+/**
+ * A function which sets geojson data and re-renders the map
+ * @param geoJson {string} The geoJson data containing locations
+ */
+
+window.updateMap = (geoJson) => {
+    const geojsonSource = window.map.getSource('earthquakes');
+    geojsonSource.setData(JSON.parse(geoJson));
+}
