@@ -2,4 +2,4 @@ FROM mcr.microsoft.com/azure-sql-edge:latest
 
 WORKDIR /db
 
-COPY InsideAirbnb.bacpac .
+COPY InsideAirbnb-sa.bacpac .
