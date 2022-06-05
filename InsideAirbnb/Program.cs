@@ -10,16 +10,22 @@ var applicationConnectionString = builder.Configuration.GetConnectionString("Ins
 var identityConnectionString = builder.Configuration.GetConnectionString("Identity") ?? throw new InvalidOperationException("Connection string not found.");
 
 // Add services to the container.
-builder.Services.AddDbContext<IdentityContext>(options =>
-    options.UseSqlServer(identityConnectionString));
 builder.Services.AddDbContext<InsideAirbnbContext>(options =>
     options.UseSqlServer(applicationConnectionString));
+builder.Services.AddDbContext<IdentityContext>(options =>
+    options.UseSqlServer(identityConnectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<IdentityContext>();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "Cache";
+});
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
