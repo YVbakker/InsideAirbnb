@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/azure-sql-edge:latest
+HEALTHCHECK --interval=30s --timeout=30s --start-period=30s --retries=10 \
+    CMD /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${MSSQL_SA_PASSWORD} -d InsideAirbnb -Q "SELECT 1 FROM listings" || exit 1
 
 WORKDIR /db
 
