@@ -41,8 +41,8 @@ window.loadMapBox = (token, geoJson, dotNetHelper) => {
             'paint': {
                 'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
                 'circle-stroke-width': 2,
-                'circle-color': 'blue',
-                'circle-stroke-color': 'white'
+                'circle-color': '#3bb2d0',
+                'circle-stroke-color': '#990000'
             }
         });
 
@@ -60,7 +60,7 @@ window.loadMapBox = (token, geoJson, dotNetHelper) => {
             source: 'earthquakes',
             filter: ['!', ['has', 'point_count']],
             paint: {
-                'circle-color': 'blue', 'circle-radius': 10, 'circle-stroke-width': 1, 'circle-stroke-color': '#fff'
+                'circle-color': '#3bb2d0', 'circle-radius': 10, 'circle-stroke-width': 1, 'circle-stroke-color': '#fff'
             }
         });
 
