@@ -8,6 +8,17 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Security-Policy"
+          content="base-uri 'self';
+                   block-all-mixed-content;
+                   default-src 'self';
+                   img-src data: https:;
+                   object-src 'none';
+                   script-src 'self' https://api.mapbox.com/ https://cdn.jsdelivr.net/npm/;
+                   style-src 'self' https://api.mapbox.com/;
+                   connect-src 'self' wss: https://api.mapbox.com/ https://events.mapbox.com/;
+                   worker-src 'self' blob:;
+                   upgrade-insecure-requests;">
     <base href="~/"/>
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css"/>
     <link href="css/site.css" rel="stylesheet"/>
