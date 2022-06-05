@@ -6,8 +6,6 @@ services:
     restart: always
     ports:
       - 1433:1433
-    volumes:
-      - database:/var/opt/mssql
     env_file:
       - .env
   grafana:
@@ -30,7 +28,7 @@ services:
       - prom:/etc/prometheus
   api:
     build:
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile
       context: .
     restart: always
     ports:
@@ -42,12 +40,7 @@ services:
     restart: always
     ports:
       - 6379:6379
-  # test:
-  #   build:
-  #     dockerfile: Dockerfile.test
-  #     context: .
 
 volumes:
-  database: null
   grafana: null
   prom: null

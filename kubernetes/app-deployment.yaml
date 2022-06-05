@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.test.yml
+    kompose.version: 1.26.1 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f docker-compose.test.yml
+        kompose.version: 1.26.1 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+        - env:
+            - name: ConnectionStrings__Identity
+              value: Server=database;Database=Identity;User Id=sa;password=<your_password>;Trusted_Connection=False
+            - name: ConnectionStrings__InsideAirbnb
+              value: Server=database;Database=InsideAirbnb;User Id=sa;password=<your_password>;Trusted_Connection=False
+            - name: Mapbox__Token
+              value: <your_token>
+          image: app
+          name: app
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          resources: {}
+      restartPolicy: Always
+status: {}
