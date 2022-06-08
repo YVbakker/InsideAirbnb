@@ -26,7 +26,7 @@ services:
       - 9090:9090
     volumes:
       - prom:/etc/prometheus
-  api:
+  app:
     build:
       dockerfile: Dockerfile
       context: .
@@ -34,7 +34,7 @@ services:
     ports:
       - 5001:80
     env_file:
-      - .env.api
+      - .env.app
   cache:
     image: redis:latest
     restart: always

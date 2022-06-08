@@ -1,0 +1,34 @@
+{
+  "insideairbnb docker home redis 125" : {
+    "transaction" : "insideairbnb docker home redis 125",
+    "sampleCount" : 2687,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 388.90621510978787,
+    "medianResTime" : 48.0,
+    "minResTime" : 16.0,
+    "maxResTime" : 3960.0,
+    "pct1ResTime" : 1204.0,
+    "pct2ResTime" : 2518.9999999999986,
+    "pct3ResTime" : 3693.24,
+    "throughput" : 75.17555885068406,
+    "receivedKBytesPerSec" : 590.7977720287888,
+    "sentKBytesPerSec" : 8.589394907744174
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 2687,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 388.90621510978787,
+    "medianResTime" : 48.0,
+    "minResTime" : 16.0,
+    "maxResTime" : 3960.0,
+    "pct1ResTime" : 1204.0,
+    "pct2ResTime" : 2518.9999999999986,
+    "pct3ResTime" : 3693.24,
+    "throughput" : 75.17555885068406,
+    "receivedKBytesPerSec" : 590.7977720287888,
+    "sentKBytesPerSec" : 8.589394907744174
+  }
+}

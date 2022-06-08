@@ -1,0 +1,34 @@
+{
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 1612,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 7730.357320099249,
+    "medianResTime" : 2730.5,
+    "minResTime" : 28.0,
+    "maxResTime" : 21287.0,
+    "pct1ResTime" : 18838.3,
+    "pct2ResTime" : 19396.949999999997,
+    "pct3ResTime" : 20387.48,
+    "throughput" : 31.251817529710554,
+    "receivedKBytesPerSec" : 245.32126200781295,
+    "sentKBytesPerSec" : 3.570764307593881
+  },
+  "insideairbnb docker home response compression" : {
+    "transaction" : "insideairbnb docker home response compression",
+    "sampleCount" : 1612,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 7730.357320099249,
+    "medianResTime" : 2730.5,
+    "minResTime" : 28.0,
+    "maxResTime" : 21287.0,
+    "pct1ResTime" : 18838.3,
+    "pct2ResTime" : 19396.949999999997,
+    "pct3ResTime" : 20387.48,
+    "throughput" : 31.251817529710554,
+    "receivedKBytesPerSec" : 245.32126200781295,
+    "sentKBytesPerSec" : 3.570764307593881
+  }
+}

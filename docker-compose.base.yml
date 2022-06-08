@@ -1,0 +1,29 @@
+services:
+  database:
+    build:
+      dockerfile: Dockerfile.db
+      context: .
+    restart: always
+    ports:
+      - 1433:1433
+    env_file:
+      - .env
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    restart: always
+    ports:
+      - 5001:80
+      - 5002:443
+    env_file:
+      - .env.app
+    volumes:
+      - type: bind
+        source: ${HOME}/.aspnet/https
+        target: /https/
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379

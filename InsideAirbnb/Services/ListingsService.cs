@@ -1,4 +1,4 @@
-using System.Globalization;
+using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using InsideAirbnb.Models;
@@ -6,17 +6,20 @@ using InsideAirbnb.Models.Dto;
 using InsideAirbnb.Models.GeoJson;
 using InsideAirbnb.Models.Parameters;
 using InsideAirbnb.Utils;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace InsideAirbnb.Services;
 
 public class ListingsService : IListingsService
 {
     private readonly InsideAirbnbContext _context;
+    private readonly IDistributedCache _cache;
     private readonly DbSet<Listing> _listingsRepo;
 
-    public ListingsService(InsideAirbnbContext context)
+    public ListingsService(InsideAirbnbContext context, IDistributedCache cache)
     {
         _context = context;
+        _cache = cache;
         _listingsRepo = _context.Set<Listing>();
     }
 
@@ -62,6 +65,28 @@ public class ListingsService : IListingsService
 
     public async Task<string> GetLocationsAsGeoJson(ListingParameters parameters)
     {
+        var serializeOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+        
+        var jsonParameters = JsonSerializer.Serialize(parameters, serializeOptions);
+        
+        var encodedCachedJsonParameters = await _cache.GetAsync("cachedParameters");
+        if (encodedCachedJsonParameters != null)
+        {
+            var cachedParameters = Encoding.UTF8.GetString(encodedCachedJsonParameters);
+            if (cachedParameters.Equals(jsonParameters))
+            {
+                var cachedGeoJson = await _cache.GetAsync("cachedGeoJson");
+                if (cachedGeoJson != null)
+                {
+                    return Encoding.UTF8.GetString(cachedGeoJson);
+                }
+            }
+        }
+        //if cached parameters exist, and are the same, get GeoJson from cache
+        //else generate new GeoJson and write it and the new parameters to cache.
         var locations = await GetLocations(parameters);
         var featureCollection = new FeatureCollection();
         foreach (var location in locations)
@@ -72,13 +97,13 @@ public class ListingsService : IListingsService
                 Properties = new Properties {Id = location.Id}
             });
         }
+        var json = JsonSerializer.Serialize(featureCollection, serializeOptions);
+        var encodedJson = Encoding.UTF8.GetBytes(json);
+        var encodedJsonParameters = Encoding.UTF8.GetBytes(jsonParameters);
+        await _cache.SetAsync("cachedParameters", encodedJsonParameters);
+        await _cache.SetAsync("cachedGeoJson", encodedJson);
 
-        var serializeOptions = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
-
-        return JsonSerializer.Serialize(featureCollection, serializeOptions);
+        return json;
     }
 
     public Task<Listing?> GetListingById(int listingId)

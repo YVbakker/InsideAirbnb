@@ -1,0 +1,34 @@
+{
+  "insideairbnb docker home" : {
+    "transaction" : "insideairbnb docker home",
+    "sampleCount" : 1611,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 855.5431409062694,
+    "medianResTime" : 62.0,
+    "minResTime" : 28.0,
+    "maxResTime" : 6801.0,
+    "pct1ResTime" : 3641.7999999999993,
+    "pct2ResTime" : 4061.3999999999996,
+    "pct3ResTime" : 5462.839999999983,
+    "throughput" : 42.30456132979701,
+    "receivedKBytesPerSec" : 332.4854114420577,
+    "sentKBytesPerSec" : 4.833626636314698
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 1611,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 855.5431409062694,
+    "medianResTime" : 62.0,
+    "minResTime" : 28.0,
+    "maxResTime" : 6801.0,
+    "pct1ResTime" : 3641.7999999999993,
+    "pct2ResTime" : 4061.3999999999996,
+    "pct3ResTime" : 5462.839999999983,
+    "throughput" : 42.30456132979701,
+    "receivedKBytesPerSec" : 332.4854114420577,
+    "sentKBytesPerSec" : 4.833626636314698
+  }
+}
