@@ -226,7 +226,7 @@ Naast OWASP ZAP, wat als het goed is al de top 10 detecteerd op de gescande appl
 Hieronder licht ik kort toe wat ik heb gedaan om de applicatie per punt (top 5) veiliger te maken:
 
 * A01 & A02: Er wordt gebruik gemaakt van [identity scaffold](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/scaffold-identity?view=aspnetcore-6.0&tabs=visual-studio), waardoor het login/authorisatiesysteem geen zelf gecreërde lekken bevat. De jwt zelf komt niet in de browser; alleen de claims. De sessie wordt bijgehouden a.d.h.v. een sessie token, die blazorserver ook gebruikt voor het bijhouden van zijn eigen verbinding.
-* A03: Injection is onmogelijk gemaakt door het gebruik van Entify Framework.
+* A03: Injection is onmogelijk gemaakt door het gebruik van Entity Framework.
 * A04 & A05: O.a. wat onder het hoofdstuk 'verdere security measures' wordt beschreven: door de productiebuild te containerizen, en alleen het strict noodzakelijke beschikbaar te stellen naar buiten, is het by design robuust. Zelfs al zou er een lek zitten in azure sql of redis, kan een aanvaller hier niet zomaar bij komen.
 
 ### Verdere security measures
